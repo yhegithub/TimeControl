@@ -213,7 +213,14 @@
             //this.initTitle();
             this.initAviableDateRange();
             this.initCallBack();
+            if(_this.type==3){
+             $('.modify-time-list').hide();
+             $('#carTimeTile').hide();
+             $('.car-title').addClass('borderbottom');
+             $('.car-timer').height(210);
+            }else{
             $(_this.type==1?'.ptime':'.rtime').click().click();
+            }
         },
         initPickupType:function(){
             this.type=this.options.type;
@@ -249,12 +256,12 @@
             this.showImmeButton = this.options.showImmeButton;
         },
         initCurrentShow:function(){
-            //this.currentShowTime = this.options.currentShowTime;
+            this.currentShowTime = this.options.currentShowTime;
             var now=new Date();
             this.options.pickupTime = this.options.pickupTime?this.options.pickupTime:DateUtil.dateFormat('yyyy-MM-dd',DateUtil.dateAdd(now,7*24*60*60*1000))+' 10:00';
             this.tempPickupTime=this.pickupTime=this.pickupTime = this.options.pickupTime;
             this.tempDropoffTime=this.dropoffTime = this.options.dropoffTime?this.options.dropoffTime:DateUtil.dateFormat('yyyy-MM-dd hh:mm',DateUtil.dateAdd(DateUtil.parseStrToDate(this.options.pickupTime),7*24*60*60*1000));
-            this.currentShowTime= this.options.type==1? this.options.pickupTime: this.options.dropoffTime;
+            this.currentShowTime= this.options.type==3?this.options.currentShowTime:(this.options.type==1? this.options.pickupTime: this.options.dropoffTime);
         },
         initDateRange:function(){
             var options = this.options;
