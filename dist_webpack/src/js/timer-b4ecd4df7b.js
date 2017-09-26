@@ -44,42 +44,11 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(1);
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	//var TimerControl = require('./TimeControl.js');
 	__webpack_require__(2);
 	__webpack_require__(15);
-	$(document).ready(function(){
-	//    console.log();
-	    //TimeControl.init();
-	     BirthdayControl.init();
-	    $(".test-btn").on("click",function(){
-	        BirthdayControl.selectDate({
-	            min:0,
-	            max:129600,
-	            currentShowTime:"2016-10-01 00:00",//"2016-10-28 13:29",
-	            pickupTime:"",//"2016-10-28 13:29",
-	            dropoffTime:"",//"2016-10-28 13:29",
-	            minAviableTime:"2010-10-28 10:00",
-	            maxAviableTime:"2019-10-28 10:00",
-	            showImmeButton:false,//是否显示立即用车
-	            title:"请选择出发时间",//控件提示title
-	            type:4,   //取还车标志1取2还3纯时间控件4生日选择
-	            success:function(res){
-	                console.log(res);
-	            }
-	        });
-	    });
-	});
-
-
 
 /***/ },
+/* 1 */,
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -1663,7 +1632,7 @@
 	            },options);
 	            this.initPickupType();
 	            this.initCurrentShow();
-	            this.initAviableDateRange();
+	           // this.initAviableDateRange();
 	            this.initCallBack();
 	             $('.modify-time-list').hide();
 	             $('#carTimeTile').hide();
@@ -1680,18 +1649,14 @@
 	        },
 	        initCurrentShow:function(){
 	            this.currentShowTime =  DateUtil.parseStrToDate(this.options.currentShowTime);
-	            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
-	            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
+	            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime||'1900-01-01 00:00');
+	            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime||DateUtil.dateFormat('yyyy-MM-dd hh:mm',new Date()));
 	            if(DateUtil.comparerDate(this.minAviableTime,this.currentShowTime)){
 	             this.currentShowTime =this.minAviableTime
 	            }
 	            if(DateUtil.comparerDate(this.currentShowTime,this.maxAviableTime)){
 	             this.currentShowTime =this.maxAviableTime
 	            }
-	        },
-	        initAviableDateRange:function(){//根据传入的时间限制 得到最早可选时间 和 最晚可选时间
-	            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
-	            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
 	        },
 	        getSelectDate:function(){
 	            //返回当前时间控件 选取的时间

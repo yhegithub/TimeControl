@@ -176,7 +176,7 @@
             },options);
             this.initPickupType();
             this.initCurrentShow();
-            this.initAviableDateRange();
+           // this.initAviableDateRange();
             this.initCallBack();
              $('.modify-time-list').hide();
              $('#carTimeTile').hide();
@@ -193,18 +193,14 @@
         },
         initCurrentShow:function(){
             this.currentShowTime =  DateUtil.parseStrToDate(this.options.currentShowTime);
-            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
-            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
+            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime||'1900-01-01 00:00');
+            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime||DateUtil.dateFormat('yyyy-MM-dd hh:mm',new Date()));
             if(DateUtil.comparerDate(this.minAviableTime,this.currentShowTime)){
              this.currentShowTime =this.minAviableTime
             }
             if(DateUtil.comparerDate(this.currentShowTime,this.maxAviableTime)){
              this.currentShowTime =this.maxAviableTime
             }
-        },
-        initAviableDateRange:function(){//根据传入的时间限制 得到最早可选时间 和 最晚可选时间
-            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
-            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
         },
         getSelectDate:function(){
             //返回当前时间控件 选取的时间
