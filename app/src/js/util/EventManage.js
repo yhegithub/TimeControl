@@ -16,7 +16,10 @@ QEvent.EventName={
     "ON_DATE_CHANGE":"onDateChange",
     "ON_HOUR_CHANGE":"onHourChange",
     "ON_MINU_CHANGE":"onMinuChange",
-    "ON_TIME_CHANGE":"onTimeChange"
+    "ON_TIME_CHANGE":"onTimeChange",
+    "ON_Year_CHANGE":"onYearChange",
+    "ON_Month_CHANGE":"onMonthChange",
+    "ON_Day_CHANGE":"onDayChange"
 }
 
 

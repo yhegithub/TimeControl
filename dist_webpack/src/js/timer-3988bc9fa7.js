@@ -266,7 +266,14 @@
 	            //this.initTitle();
 	            this.initAviableDateRange();
 	            this.initCallBack();
+	            if(_this.type==3){
+	             $('.modify-time-list').hide();
+	             $('#carTimeTile').hide();
+	             $('.car-title').addClass('borderbottom');
+	             $('.car-timer').height(210);
+	            }else{
 	            $(_this.type==1?'.ptime':'.rtime').click().click();
+	            }
 	        },
 	        initPickupType:function(){
 	            this.type=this.options.type;
@@ -302,12 +309,12 @@
 	            this.showImmeButton = this.options.showImmeButton;
 	        },
 	        initCurrentShow:function(){
-	            //this.currentShowTime = this.options.currentShowTime;
+	            this.currentShowTime = this.options.currentShowTime;
 	            var now=new Date();
 	            this.options.pickupTime = this.options.pickupTime?this.options.pickupTime:DateUtil.dateFormat('yyyy-MM-dd',DateUtil.dateAdd(now,7*24*60*60*1000))+' 10:00';
 	            this.tempPickupTime=this.pickupTime=this.pickupTime = this.options.pickupTime;
 	            this.tempDropoffTime=this.dropoffTime = this.options.dropoffTime?this.options.dropoffTime:DateUtil.dateFormat('yyyy-MM-dd hh:mm',DateUtil.dateAdd(DateUtil.parseStrToDate(this.options.pickupTime),7*24*60*60*1000));
-	            this.currentShowTime= this.options.type==1? this.options.pickupTime: this.options.dropoffTime;
+	            this.currentShowTime= this.options.type==3?this.options.currentShowTime:(this.options.type==1? this.options.pickupTime: this.options.dropoffTime);
 	        },
 	        initDateRange:function(){
 	            var options = this.options;
@@ -402,7 +409,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n}\n.cart-h-c {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -o-box-align: center;\n}\n.cart-h-u {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: start;\n  -moz-box-align: start;\n  -o-box-align: start;\n}\n/*//扭曲\n.rotate3d(@x:1,@y:0,@z:0,@d:0deg){\n  -webkit-transform:rotate3d(@x,@y,@z,@d);\n  -moz-transform:rotate3d(@x,@y,@z,@d);\n  -o-transform:rotate3d(@x,@y,@z,@d);\n  transform:rotate3d(@x,@y,@z,@d);\n}*/\nbody .car-bg {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  z-index: 98;\n  background: rgba(0, 0, 0, 0.7);\n}\nbody .car-timer {\n  width: 100%;\n  height: 250px;\n  position: fixed;\n  bottom: 0;\n  z-index: 99;\n  background: #fff;\n}\nbody .car-timer .car-title {\n  width: 100%;\n  height: 50px;\n  font-size: 14px;\n  color: #666;\n  position: relative;\n}\nbody .car-timer .car-title:after {\n  content: \"\";\n  width: 200%;\n  height: 200%;\n  left: 0;\n  top: 0;\n  border-bottom: 1px solid #eee;\n  /*border-top:1px solid #999;*/\n  display: block;\n  position: absolute;\n  -webkit-transform: scale(0.5, 0.5);\n  -moz-transform: scale(0.5, 0.5);\n  -o-transform: scale(0.5, 0.5);\n  transform: scale(0.5, 0.5);\n  z-index: 1;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  transform-origin: 0 0;\n}\nbody .car-timer .car-title .car-btn-cansel {\n  position: absolute;\n  left: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-title .car-btn-sure {\n  position: absolute;\n  right: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-body {\n  height: 150px;\n}\nbody .car-timer .car-body .car-time-show {\n  width: 90%;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame {\n  height: 150px;\n  overflow: hidden;\n  position: relative;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up,\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  width: 100%;\n  height: 45px;\n  position: absolute;\n  z-index: 1;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  bottom: 0;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list {\n  font-size: 18px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-date {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-hour {\n  height: 30px;\n  margin: 0 25px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-minu {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\n.modify-time-list {\n  height: 50px;\n  overflow: hidden;\n}\n.modify-time-list li {\n  display: inline-block;\n  width: 50%;\n  text-align: center;\n  float: left;\n  height: auto;\n  padding: 8px 0;\n  line-height: 1;\n  background-color: #ececec;\n  color: #848a8f;\n}\n.modify-time-list .hd {\n  font-size: 12px;\n  padding-bottom: 5px;\n}\n.modify-time-list .ptime-text,\n.modify-time-list .rtime-text {\n  font-size: 15px;\n}\n.modify-time-list li.on {\n  background-color: #1ba9ba;\n  color: #F5F5F5;\n}\n.modify-time-list li.on .ptime-text,\n.modify-time-list li.on .rtime-text {\n  color: #f5f5f5;\n}\n.messtipred {\n  color: #ff4646;\n  padding: 7px 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n.messtipred span {\n  display: block;\n  padding-bottom: 5px;\n  font-size: 17px;\n}\n.messtip {\n  color: #1E1D1D;\n  font-size: 17px;\n}\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n}\n.cart-h-c {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -o-box-align: center;\n}\n.cart-h-u {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: start;\n  -moz-box-align: start;\n  -o-box-align: start;\n}\n/*//扭曲\n.rotate3d(@x:1,@y:0,@z:0,@d:0deg){\n  -webkit-transform:rotate3d(@x,@y,@z,@d);\n  -moz-transform:rotate3d(@x,@y,@z,@d);\n  -o-transform:rotate3d(@x,@y,@z,@d);\n  transform:rotate3d(@x,@y,@z,@d);\n}*/\nbody .car-bg {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  z-index: 98;\n  background: rgba(0, 0, 0, 0.7);\n}\nbody .car-timer {\n  width: 100%;\n  height: 250px;\n  position: fixed;\n  bottom: 0;\n  z-index: 99;\n  background: #fff;\n}\nbody .car-timer .car-title {\n  width: 100%;\n  height: 50px;\n  font-size: 14px;\n  color: #666;\n  position: relative;\n}\nbody .car-timer .car-title:after {\n  content: \"\";\n  width: 200%;\n  height: 200%;\n  left: 0;\n  top: 0;\n  border-bottom: 1px solid #eee;\n  /*border-top:1px solid #999;*/\n  display: block;\n  position: absolute;\n  -webkit-transform: scale(0.5, 0.5);\n  -moz-transform: scale(0.5, 0.5);\n  -o-transform: scale(0.5, 0.5);\n  transform: scale(0.5, 0.5);\n  z-index: 1;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  transform-origin: 0 0;\n}\nbody .car-timer .car-title .car-btn-cansel {\n  position: absolute;\n  left: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-title .car-btn-sure {\n  position: absolute;\n  right: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-body {\n  height: 150px;\n}\nbody .car-timer .car-body .car-time-show {\n  width: 90%;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame {\n  height: 150px;\n  overflow: hidden;\n  position: relative;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up,\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  width: 100%;\n  height: 45px;\n  position: absolute;\n  z-index: 1;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  bottom: 0;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list {\n  font-size: 18px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-date {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-hour {\n  height: 30px;\n  margin: 0 25px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-minu {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\n.modify-time-list {\n  height: 50px;\n  overflow: hidden;\n}\n.modify-time-list li {\n  display: inline-block;\n  width: 50%;\n  text-align: center;\n  float: left;\n  height: auto;\n  padding: 8px 0;\n  line-height: 1;\n  background-color: #ececec;\n  color: #848a8f;\n}\n.modify-time-list .hd {\n  font-size: 12px;\n  padding-bottom: 5px;\n}\n.modify-time-list .ptime-text,\n.modify-time-list .rtime-text {\n  font-size: 15px;\n}\n.modify-time-list li.on {\n  background-color: #1ba9ba;\n  color: #F5F5F5;\n}\n.modify-time-list li.on .ptime-text,\n.modify-time-list li.on .rtime-text {\n  color: #f5f5f5;\n}\n.messtipred {\n  color: #ff4646;\n  padding: 7px 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n.messtipred span {\n  display: block;\n  padding-bottom: 5px;\n  font-size: 17px;\n}\n.messtip {\n  color: #1E1D1D;\n  font-size: 17px;\n}\n.borderbottom {\n  border-bottom: 1px #ececec solid;\n}\n", ""]);
 
 	// exports
 
@@ -806,27 +813,23 @@
 	    minTime:null,
 	    maxTime:null,
 	    ctrler:null,//父级控制组件
-	    isLiji:false,
 	    currentTime:"",
 	    ctor:function(ctrl){
 	        this.ctrler = ctrl;
 	        this._super("carTimeControlDate");
 	    },
-	    resetTextList:function(minTime,maxTime,isLiji,currentTime){
+	    resetTextList:function(minTime,maxTime,currentTime){
 	        this.minTime = minTime;
 	        this.maxTime = maxTime;
-	        this.isLiji = isLiji;
+
 	        this.currentTime = currentTime;
-	        var textList = this.produceTextList(minTime,maxTime,isLiji);
+	        var textList = this.produceTextList(minTime,maxTime);
 	        this._super(textList);
 	        this.initDefault();
 	    },
-	    produceTextList:function(minTime,maxTime,isLiji){
+	    produceTextList:function(minTime,maxTime){
 	        var textList=[];
 	        var now = minTime;
-	        if(isLiji){
-	            textList.push("马上用车");
-	        }
 	        function _myComparer(date1,date2){//只比较date1 date2的日期
 	            var maxDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date1));
 	            var nowDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date2));
@@ -858,20 +861,11 @@
 	            var days = (currentDay.getTime()-minDay.getTime())/(24*3600000);
 	            currentIndex = days;
 	        }
-	        if(this.isLiji){
-	            currentIndex++;
-	        }
 	        this.currentIndex=currentIndex;
 	        this.resetPos();
 	    },
 	    getSelect:function(){
 	        var currentIndex = this.currentIndex;
-	        if(this.isLiji){
-	            if(currentIndex==0){
-	                return -1;//返回-1 说明是立即用车
-	            }
-	            currentIndex--; 
-	        }
 	        var select = DateUtil.dateAdd(this.minTime,currentIndex*24*3600000);
 	        return DateUtil.dateFormat("yyyy-MM-dd",select);
 	    },
@@ -1219,7 +1213,10 @@
 	    "ON_DATE_CHANGE":"onDateChange",
 	    "ON_HOUR_CHANGE":"onHourChange",
 	    "ON_MINU_CHANGE":"onMinuChange",
-	    "ON_TIME_CHANGE":"onTimeChange"
+	    "ON_TIME_CHANGE":"onTimeChange",
+	    "ON_Year_CHANGE":"onYearChange",
+	    "ON_Month_CHANGE":"onMonthChange",
+	    "ON_Day_CHANGE":"onDayChange"
 	}
 
 

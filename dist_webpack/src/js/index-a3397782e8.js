@@ -53,27 +53,28 @@
 	"use strict";
 	//var TimerControl = require('./TimeControl.js');
 	__webpack_require__(2);
+	__webpack_require__(15);
 	$(document).ready(function(){
 	//    console.log();
-	    TimeControl.init();
-
+	    //TimeControl.init();
+	     BirthdayControl.init();
 	    $(".test-btn").on("click",function(){
-	        TimeControl.selectDate({
+	        BirthdayControl.selectDate({
 	            min:0,
 	            max:129600,
-	            currentShowTime:"2017-03-8 13:30",//"2016-10-28 13:29",
+	            currentShowTime:"2016-10-01 00:00",//"2016-10-28 13:29",
 	            pickupTime:"",//"2016-10-28 13:29",
-	            dropoffTime:"2017-03-10 13:30",//"2016-10-28 13:29",
+	            dropoffTime:"",//"2016-10-28 13:29",
+	            minAviableTime:"2010-10-28 10:00",
+	            maxAviableTime:"2019-10-28 10:00",
 	            showImmeButton:false,//是否显示立即用车
 	            title:"请选择出发时间",//控件提示title
-	            type:1,   //取还车标志1取2还
+	            type:4,   //取还车标志1取2还3纯时间控件4生日选择
 	            success:function(res){
 	                console.log(res);
 	            }
 	        });
 	    });
-
-
 	});
 
 
@@ -297,7 +298,14 @@
 	            //this.initTitle();
 	            this.initAviableDateRange();
 	            this.initCallBack();
+	            if(_this.type==3){
+	             $('.modify-time-list').hide();
+	             $('#carTimeTile').hide();
+	             $('.car-title').addClass('borderbottom');
+	             $('.car-timer').height(210);
+	            }else{
 	            $(_this.type==1?'.ptime':'.rtime').click().click();
+	            }
 	        },
 	        initPickupType:function(){
 	            this.type=this.options.type;
@@ -333,12 +341,12 @@
 	            this.showImmeButton = this.options.showImmeButton;
 	        },
 	        initCurrentShow:function(){
-	            //this.currentShowTime = this.options.currentShowTime;
+	            this.currentShowTime = this.options.currentShowTime;
 	            var now=new Date();
 	            this.options.pickupTime = this.options.pickupTime?this.options.pickupTime:DateUtil.dateFormat('yyyy-MM-dd',DateUtil.dateAdd(now,7*24*60*60*1000))+' 10:00';
 	            this.tempPickupTime=this.pickupTime=this.pickupTime = this.options.pickupTime;
 	            this.tempDropoffTime=this.dropoffTime = this.options.dropoffTime?this.options.dropoffTime:DateUtil.dateFormat('yyyy-MM-dd hh:mm',DateUtil.dateAdd(DateUtil.parseStrToDate(this.options.pickupTime),7*24*60*60*1000));
-	            this.currentShowTime= this.options.type==1? this.options.pickupTime: this.options.dropoffTime;
+	            this.currentShowTime= this.options.type==3?this.options.currentShowTime:(this.options.type==1? this.options.pickupTime: this.options.dropoffTime);
 	        },
 	        initDateRange:function(){
 	            var options = this.options;
@@ -433,7 +441,7 @@
 
 
 	// module
-	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n}\n.cart-h-c {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -o-box-align: center;\n}\n.cart-h-u {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: start;\n  -moz-box-align: start;\n  -o-box-align: start;\n}\n/*//扭曲\n.rotate3d(@x:1,@y:0,@z:0,@d:0deg){\n  -webkit-transform:rotate3d(@x,@y,@z,@d);\n  -moz-transform:rotate3d(@x,@y,@z,@d);\n  -o-transform:rotate3d(@x,@y,@z,@d);\n  transform:rotate3d(@x,@y,@z,@d);\n}*/\nbody .car-bg {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  z-index: 98;\n  background: rgba(0, 0, 0, 0.7);\n}\nbody .car-timer {\n  width: 100%;\n  height: 250px;\n  position: fixed;\n  bottom: 0;\n  z-index: 99;\n  background: #fff;\n}\nbody .car-timer .car-title {\n  width: 100%;\n  height: 50px;\n  font-size: 14px;\n  color: #666;\n  position: relative;\n}\nbody .car-timer .car-title:after {\n  content: \"\";\n  width: 200%;\n  height: 200%;\n  left: 0;\n  top: 0;\n  border-bottom: 1px solid #eee;\n  /*border-top:1px solid #999;*/\n  display: block;\n  position: absolute;\n  -webkit-transform: scale(0.5, 0.5);\n  -moz-transform: scale(0.5, 0.5);\n  -o-transform: scale(0.5, 0.5);\n  transform: scale(0.5, 0.5);\n  z-index: 1;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  transform-origin: 0 0;\n}\nbody .car-timer .car-title .car-btn-cansel {\n  position: absolute;\n  left: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-title .car-btn-sure {\n  position: absolute;\n  right: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-body {\n  height: 150px;\n}\nbody .car-timer .car-body .car-time-show {\n  width: 90%;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame {\n  height: 150px;\n  overflow: hidden;\n  position: relative;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up,\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  width: 100%;\n  height: 45px;\n  position: absolute;\n  z-index: 1;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  bottom: 0;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list {\n  font-size: 18px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-date {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-hour {\n  height: 30px;\n  margin: 0 25px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-minu {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\n.modify-time-list {\n  height: 50px;\n  overflow: hidden;\n}\n.modify-time-list li {\n  display: inline-block;\n  width: 50%;\n  text-align: center;\n  float: left;\n  height: auto;\n  padding: 8px 0;\n  line-height: 1;\n  background-color: #ececec;\n  color: #848a8f;\n}\n.modify-time-list .hd {\n  font-size: 12px;\n  padding-bottom: 5px;\n}\n.modify-time-list .ptime-text,\n.modify-time-list .rtime-text {\n  font-size: 15px;\n}\n.modify-time-list li.on {\n  background-color: #1ba9ba;\n  color: #F5F5F5;\n}\n.modify-time-list li.on .ptime-text,\n.modify-time-list li.on .rtime-text {\n  color: #f5f5f5;\n}\n.messtipred {\n  color: #ff4646;\n  padding: 7px 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n.messtipred span {\n  display: block;\n  padding-bottom: 5px;\n  font-size: 17px;\n}\n.messtip {\n  color: #1E1D1D;\n  font-size: 17px;\n}\n", ""]);
+	exports.push([module.id, "* {\n  margin: 0;\n  padding: 0;\n}\n.cart-h-c {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: center;\n  -moz-box-align: center;\n  -o-box-align: center;\n}\n.cart-h-u {\n  display: -webkit-box;\n  display: -moz-box;\n  display: box;\n  box-orient: horizontal;\n  -webkit-box-orient: horizontal;\n  -moz-box-orient: horizontal;\n  -o-box-orient: horizontal;\n  box-pack: center;\n  -webkit-box-pack: center;\n  -moz-box-pack: center;\n  -o-box-pack: center;\n  box-align: center;\n  -webkit-box-align: start;\n  -moz-box-align: start;\n  -o-box-align: start;\n}\n/*//扭曲\n.rotate3d(@x:1,@y:0,@z:0,@d:0deg){\n  -webkit-transform:rotate3d(@x,@y,@z,@d);\n  -moz-transform:rotate3d(@x,@y,@z,@d);\n  -o-transform:rotate3d(@x,@y,@z,@d);\n  transform:rotate3d(@x,@y,@z,@d);\n}*/\nbody .car-bg {\n  position: absolute;\n  left: 0;\n  right: 0;\n  top: 0;\n  bottom: 0;\n  z-index: 98;\n  background: rgba(0, 0, 0, 0.7);\n}\nbody .car-timer {\n  width: 100%;\n  height: 250px;\n  position: fixed;\n  bottom: 0;\n  z-index: 99;\n  background: #fff;\n}\nbody .car-timer .car-title {\n  width: 100%;\n  height: 50px;\n  font-size: 14px;\n  color: #666;\n  position: relative;\n}\nbody .car-timer .car-title:after {\n  content: \"\";\n  width: 200%;\n  height: 200%;\n  left: 0;\n  top: 0;\n  border-bottom: 1px solid #eee;\n  /*border-top:1px solid #999;*/\n  display: block;\n  position: absolute;\n  -webkit-transform: scale(0.5, 0.5);\n  -moz-transform: scale(0.5, 0.5);\n  -o-transform: scale(0.5, 0.5);\n  transform: scale(0.5, 0.5);\n  z-index: 1;\n  -webkit-transform-origin: 0 0;\n  -moz-transform-origin: 0 0;\n  -o-transform-origin: 0 0;\n  transform-origin: 0 0;\n}\nbody .car-timer .car-title .car-btn-cansel {\n  position: absolute;\n  left: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-title .car-btn-sure {\n  position: absolute;\n  right: 0;\n  width: 60px;\n  height: 40px;\n  color: #1ba9ba;\n  z-index: 2;\n}\nbody .car-timer .car-body {\n  height: 150px;\n}\nbody .car-timer .car-body .car-time-show {\n  width: 90%;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame {\n  height: 150px;\n  overflow: hidden;\n  position: relative;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up,\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  width: 100%;\n  height: 45px;\n  position: absolute;\n  z-index: 1;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-up {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.6));\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .mask-down {\n  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  background: linear-gradient(top, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9));\n  bottom: 0;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list {\n  font-size: 18px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-date {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-hour {\n  height: 30px;\n  margin: 0 25px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-minu {\n  height: 30px;\n  margin: 0 10px;\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currpre2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext1 {\n  -webkit-transform: scale(0.9, 0.9);\n  -moz-transform: scale(0.9, 0.9);\n  -o-transform: scale(0.9, 0.9);\n  transform: scale(0.9, 0.9);\n}\nbody .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-time-item-currnext2 {\n  -webkit-transform: scale(0.8, 0.8);\n  -moz-transform: scale(0.8, 0.8);\n  -o-transform: scale(0.8, 0.8);\n  transform: scale(0.8, 0.8);\n}\n.modify-time-list {\n  height: 50px;\n  overflow: hidden;\n}\n.modify-time-list li {\n  display: inline-block;\n  width: 50%;\n  text-align: center;\n  float: left;\n  height: auto;\n  padding: 8px 0;\n  line-height: 1;\n  background-color: #ececec;\n  color: #848a8f;\n}\n.modify-time-list .hd {\n  font-size: 12px;\n  padding-bottom: 5px;\n}\n.modify-time-list .ptime-text,\n.modify-time-list .rtime-text {\n  font-size: 15px;\n}\n.modify-time-list li.on {\n  background-color: #1ba9ba;\n  color: #F5F5F5;\n}\n.modify-time-list li.on .ptime-text,\n.modify-time-list li.on .rtime-text {\n  color: #f5f5f5;\n}\n.messtipred {\n  color: #ff4646;\n  padding: 7px 0;\n  font-size: 12px;\n  line-height: 12px;\n}\n.messtipred span {\n  display: block;\n  padding-bottom: 5px;\n  font-size: 17px;\n}\n.messtip {\n  color: #1E1D1D;\n  font-size: 17px;\n}\n.borderbottom {\n  border-bottom: 1px #ececec solid;\n}\n", ""]);
 
 	// exports
 
@@ -837,27 +845,23 @@
 	    minTime:null,
 	    maxTime:null,
 	    ctrler:null,//父级控制组件
-	    isLiji:false,
 	    currentTime:"",
 	    ctor:function(ctrl){
 	        this.ctrler = ctrl;
 	        this._super("carTimeControlDate");
 	    },
-	    resetTextList:function(minTime,maxTime,isLiji,currentTime){
+	    resetTextList:function(minTime,maxTime,currentTime){
 	        this.minTime = minTime;
 	        this.maxTime = maxTime;
-	        this.isLiji = isLiji;
+
 	        this.currentTime = currentTime;
-	        var textList = this.produceTextList(minTime,maxTime,isLiji);
+	        var textList = this.produceTextList(minTime,maxTime);
 	        this._super(textList);
 	        this.initDefault();
 	    },
-	    produceTextList:function(minTime,maxTime,isLiji){
+	    produceTextList:function(minTime,maxTime){
 	        var textList=[];
 	        var now = minTime;
-	        if(isLiji){
-	            textList.push("马上用车");
-	        }
 	        function _myComparer(date1,date2){//只比较date1 date2的日期
 	            var maxDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date1));
 	            var nowDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date2));
@@ -889,20 +893,11 @@
 	            var days = (currentDay.getTime()-minDay.getTime())/(24*3600000);
 	            currentIndex = days;
 	        }
-	        if(this.isLiji){
-	            currentIndex++;
-	        }
 	        this.currentIndex=currentIndex;
 	        this.resetPos();
 	    },
 	    getSelect:function(){
 	        var currentIndex = this.currentIndex;
-	        if(this.isLiji){
-	            if(currentIndex==0){
-	                return -1;//返回-1 说明是立即用车
-	            }
-	            currentIndex--; 
-	        }
 	        var select = DateUtil.dateAdd(this.minTime,currentIndex*24*3600000);
 	        return DateUtil.dateFormat("yyyy-MM-dd",select);
 	    },
@@ -1250,7 +1245,10 @@
 	    "ON_DATE_CHANGE":"onDateChange",
 	    "ON_HOUR_CHANGE":"onHourChange",
 	    "ON_MINU_CHANGE":"onMinuChange",
-	    "ON_TIME_CHANGE":"onTimeChange"
+	    "ON_TIME_CHANGE":"onTimeChange",
+	    "ON_Year_CHANGE":"onYearChange",
+	    "ON_Month_CHANGE":"onMonthChange",
+	    "ON_Day_CHANGE":"onDayChange"
 	}
 
 
@@ -1482,6 +1480,424 @@
 	    }
 	});
 	module.exports = MinuWheelClass;
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;"use strict";
+	(function(global, factory) {
+	    var fa = factory();
+	    if (true) { // AMD || CMD
+	        if (true) {
+	            !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	                return fa;
+	            }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	        } else if (define.cmd) {
+	            define(function(require, exports, module) {
+	                module.exports = fa;
+	            });
+	        } 
+	    } else if (typeof module === "object" && typeof module.exports === "object") { // commonJS
+	        module.exports = fa;
+	    } else { // global
+
+	    }
+	    window.BirthdayControl = fa;
+	}(typeof window !== "undefined" ? window : this, function() {
+	    __webpack_require__(3);
+	    var timerHtml = __webpack_require__(7)({});
+
+	    var DateUtil = __webpack_require__(8);
+
+	    var DateWheelClass = __webpack_require__(9);
+	    var HourWheelClass = __webpack_require__(13);
+	    var MinuWheelClass = __webpack_require__(14);
+
+	    var YearWheelClass = __webpack_require__(16);
+	    var MonthWheelClass = __webpack_require__(17);
+	    var DayWheelClass = __webpack_require__(18);
+
+	    var QEvent = __webpack_require__(12).QEvent;
+	    var em = __webpack_require__(12).EventManager;
+
+	    var timeControlInitFlag = false;
+	    var BirthdayControl = {
+	        id:"carTimer",
+	        ele:null,
+
+	        options:null,
+	        minTime:null,//最小时间限
+	        maxTime:null,//最大时间限
+	        minAviableTime:null,//最小可选时间
+	        maxAviableTime:null,//最大可选时间
+	        step:0,//最小时间刻度分钟
+	        currentShowTime:"",
+	        pickupTime:"",
+	        dropoffTime:"",
+	        tempPickupTime:"",
+	        tempDropoffTime:"",
+	        showImmeButton:true,//是否显示马上用车
+	        onSelectDate:null,  //选择时间之后的回调
+	        type:1,
+	        dateControl:null,
+	        hourControl:null,
+	        minuControl:null,
+	        init:function(options){
+	            if(timeControlInitFlag){
+	                return;
+	            }
+	            timeControlInitFlag = true;
+	            this.initHtml();
+	            this.ele = $("#"+this.id);
+	            this.initListener();
+	        },
+	        initHtml:function(){
+	            $("body").append(timerHtml);
+	        },
+	        postTimeChangeMsg:function(){
+	            var event = new QEvent(QEvent.EventName.ON_TIME_CHANGE);
+	            em.postMsg(event);
+	            //this.timeChangeEvent();
+	        },
+	        initListener:function(){
+	            var _this = this;
+	            //添加对滚轮的侦听
+	            em.addEventListener(QEvent.EventName.ON_Year_CHANGE,function(e){
+	                _this.postTimeChangeMsg();
+	            });
+	            em.addEventListener(QEvent.EventName.ON_Month_CHANGE,function(e){
+	                _this.postTimeChangeMsg();
+	            });
+	            em.addEventListener(QEvent.EventName.ON_Day_CHANGE,function(e){
+	                _this.postTimeChangeMsg();
+	            });
+	            //添加对 取消 确定按钮的侦听
+	            $("#carTimeSure").on("click",function(){
+	                //隐藏当前控件 并调用传入的回调
+	                _this.hide();
+	                if(_this.onSelectDate){
+	                    var select = _this.getSelectDate();
+	                    var returnObj = {};
+	                    returnObj["selectUserTime"]=DateUtil.dateFormat('yyyy-MM-dd hh:mm',select);
+	                    _this.onSelectDate(returnObj);
+	                }
+	            });
+	            $("#carTimeCansel,#carTimerMask").on("click",function(){
+	                //直接隐藏当前控件
+	                _this.hide();
+	            });
+	        },
+
+	        timeChangeEvent:function(){
+	            var _this=this;
+	            var selectDate = _this.getSelectDate();
+	            var ptime=$('.modify-time-list .ptime');
+	            var rtime=$('.modify-time-list .rtime');
+	            var select=_this.type==1?ptime:rtime;
+	            var selectDateStr=DateUtil.dateFormat('yyyy-MM-dd hh:mm',selectDate);
+	            if(_this.type==1)
+	            {
+	             _this.tempPickupTime= selectDateStr;  
+	             if(selectDate.getTime()>=(DateUtil.parseStrToDate(_this.tempDropoffTime)).getTime()){
+	                var addedDate=DateUtil.dateAdd(selectDate,2*24*60*60*1000);
+	               _this.tempDropoffTime=DateUtil.dateFormat('yyyy-MM-dd hh:mm',addedDate);
+	              _this.updateText(rtime,addedDate);
+	            }
+	            }else{
+	                _this.tempDropoffTime= selectDateStr; 
+	            }
+	             _this.updateText(select,selectDate);
+	        },
+	        updateText:function(dom,date){
+	          dom.attr('data-time',date).find('.rtime-text')
+	         .text(DateUtil.dateFormat('MM月dd日 hh:mm',date));
+	        },
+	        hide:function(){
+	            this.ele.hide();
+	        },
+	        show:function(){
+	            this.ele.show();
+	        },
+
+	        selectDate:function(options){
+	            this.initOption(options);
+	            this.initYear();
+	            this.initMonth();
+	            this.initDay();
+	            this.postTimeChangeMsg();//用来调整初始化时间
+	            this.show();
+	        },
+	        initYear:function(){
+	            if(!this.yearControl){
+	                this.yearControl = new YearWheelClass(this);
+	            }
+	            this.yearControl.resetTextList(this.minAviableTime,this.maxAviableTime,this.currentShowTime);
+	        },
+	        initMonth:function(){
+	            if(!this.monthControl){
+	                this.monthControl = new MonthWheelClass(this);
+	            }
+	            this.monthControl.resetTextList(this.minAviableTime,this.maxAviableTime,this.currentShowTime);
+	        },
+	        initDay:function(){
+	            if(!this.dayControl){
+	                this.dayControl = new DayWheelClass(this);
+	            }
+	            this.dayControl.resetTextList(this.minAviableTime,this.maxAviableTime,this.currentShowTime);
+	        },
+	        initOption:function(options){
+	            var _this=this;
+	            //options min 是距离当前时间的最短可用时间 默认是0
+	            //max 是具体当前时间的最长可用时间 默认是1年 单位是分钟
+	            this.options = $.extend({
+	                min:5,
+	                max:525600,
+	                minDate:"",//"yyyy-MM-dd hh:mm",
+	                maxDate:"",
+	                currentShowTime:"",//"2016-10-28 13:29",
+	                showImmeButton:false,//是否显示立即用车
+	                title:"请选择时间",//控件提示title
+	                success:function(){},
+	                step:24*60//最小时间刻度
+	            },options);
+	            this.initPickupType();
+	            this.initCurrentShow();
+	            this.initAviableDateRange();
+	            this.initCallBack();
+	             $('.modify-time-list').hide();
+	             $('#carTimeTile').hide();
+	             $('.car-title').addClass('borderbottom');
+	             $('.car-timer').height(210);
+	             $('.car-time-show>div').css('width','30%');
+	        },
+	        initPickupType:function(){
+	            this.type=this.options.type;
+	        },
+
+	        initCallBack:function(){
+	            this.onSelectDate = this.options.success;
+	        },
+	        initCurrentShow:function(){
+	            this.currentShowTime =  DateUtil.parseStrToDate(this.options.currentShowTime);
+	            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
+	            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
+	            if(DateUtil.comparerDate(this.minAviableTime,this.currentShowTime)){
+	             this.currentShowTime =this.minAviableTime
+	            }
+	            if(DateUtil.comparerDate(this.currentShowTime,this.maxAviableTime)){
+	             this.currentShowTime =this.maxAviableTime
+	            }
+	        },
+	        initAviableDateRange:function(){//根据传入的时间限制 得到最早可选时间 和 最晚可选时间
+	            this.minAviableTime = DateUtil.parseStrToDate(this.options.minAviableTime);
+	            this.maxAviableTime = DateUtil.parseStrToDate(this.options.maxAviableTime);
+	        },
+	        getSelectDate:function(){
+	            //返回当前时间控件 选取的时间
+	            var selectYear= this.yearControl.getSelect();
+	            var selectMonth = this.monthControl.getSelect();
+	            var selectDay = this.dayControl.getSelect();
+	            var select = selectYear+"-"+selectMonth+"-"+selectDay+" 00:00";
+	            return DateUtil.parseStrToDate(select);
+	        }
+
+	    }
+
+	    return {
+	        init:function(){
+	            BirthdayControl.init();
+	        },
+	        selectDate:function(options){
+	            BirthdayControl.selectDate(options);
+	        },
+	        getSelectDate:function(){
+	            return BirthdayControl.getSelectDate();
+	        }
+	    };
+
+	}));
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var WheelClass=__webpack_require__(10);
+	var DateUtil = __webpack_require__(8);
+	var QEvent = __webpack_require__(12).QEvent;
+	var em = __webpack_require__(12).EventManager;
+	var YearWheelClass = WheelClass.extend({
+	    itemClassName:"car-time-date",
+	    minTime:null,
+	    maxTime:null,
+	    ctrler:null,//父级控制组件
+	    currentTime:"",
+	    ctor:function(ctrl){
+	        this.ctrler = ctrl;
+	        this._super("carTimeControlDate");
+	    },
+	    resetTextList:function(minTime,maxTime,currentTime){
+	        this.minTime = minTime;
+	        this.maxTime = maxTime;
+
+	        this.currentTime = currentTime;
+	        var textList = this.produceTextList(minTime,maxTime);
+	        this._super(textList);
+	        this.initDefault();
+	    },
+	    produceTextList:function(minTime,maxTime){
+	        var textList=[];
+	        var minYear=minTime.getFullYear();
+	        var maxYear=maxTime.getFullYear();
+	        for(var i=minYear;i<=maxYear;i++){
+	            textList.push(i);
+	        }
+	        return textList;
+	    },
+
+	    initDefault:function(){
+	        var currentTime = this.currentTime;
+	        var currentIndex=0;
+	        if(currentTime!=""){
+	            var currentYear =currentTime.getFullYear();
+	            var minYear = this.minTime.getFullYear();
+	            var days =currentYear - minYear;
+	            currentIndex = days;
+	        }
+	        this.currentIndex=currentIndex;
+	        this.resetPos();
+	    },
+	    getSelect:function(){
+	        return this.currentIndex+this.minTime.getFullYear();
+	    },
+	    onCurrentIndexChange:function(){
+	        var event = new QEvent(QEvent.EventName.ON_DATE_CHANGE);
+	        em.postMsg(event);
+	    }
+	});
+	module.exports = YearWheelClass;
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var WheelClass=__webpack_require__(10);
+	var QEvent = __webpack_require__(12).QEvent;
+	var em = __webpack_require__(12).EventManager;
+	var DateUtil = __webpack_require__(8);
+	var MonthWheelClass = WheelClass.extend({
+	    itemClassName:"car-time-hour",
+	    minTime:null,
+	    maxTime:null,
+	    ctrler:null,//父级控制组件
+	    currentTime:"",
+	    ctor:function(ctrl){
+	        this.ctrler = ctrl;
+	        this._super("carTimeControlHour");
+	    },
+	    resetTextList:function(minTime,maxTime,currentTime){
+	        this.currentTime = currentTime;
+	        var textList = this.produceTextList();
+	        this._super(textList);
+	        this.initDefault();
+	    },
+	    produceTextList:function(){
+	        var textList = [];
+	        for(var i=1;i<13;i++){
+	            if(i<10){
+	                textList.push("0"+i);
+	            }else{
+	                textList.push(i);
+	            }
+	        }
+	        return textList;
+	    },
+	    initDefault:function(){
+	        var currentTime = this.currentTime;
+	        if(currentTime!=""){
+	            var currentMonth = currentTime.getMonth();
+	            this.resetPosByMonth(currentMonth);
+	        }
+	    },
+	    getSelect:function(){
+	        var currentIndex = this.currentIndex;
+	        return currentIndex+1;
+	    },
+	    onCurrentIndexChange:function(){
+	        var event = new QEvent(QEvent.EventName.ON_Month_CHANGE);
+	        em.postMsg(event);
+	    },
+	    resetPosByMonth:function(currentMonth){
+	            this.currentIndex = currentMonth;
+	            this.resetPos();
+	            this.onCurrentIndexChange();//当滚轮变化时触发；
+	    }
+	});
+	module.exports = MonthWheelClass;
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var WheelClass=__webpack_require__(10);
+	var QEvent = __webpack_require__(12).QEvent;
+	var em = __webpack_require__(12).EventManager;
+	var DateUtil = __webpack_require__(8);
+	var DayWheelClass = WheelClass.extend({
+	    itemClassName:"car-time-minu",
+	    minTime:null,
+	    maxTime:null,
+	    timeStep:null,
+	    ctrler:null,//父级控制组件
+	    currentTime:"",
+	    ctor:function(ctrl){
+	        this.ctrler = ctrl;
+	        this._super("carTimeControlMinu");
+	    },
+	    resetTextList:function(minTime,maxTime,currentTime){
+	        this.currentTime=currentTime;
+	        var textList = this.produceTextList();
+	        this._super(textList);
+	        this.initDefault();
+	    },
+	    produceTextList:function(){
+	        var textList = [];
+	        var begin = 1;
+	        while(begin<32){
+	            if(begin<10){
+	                textList.push("0"+begin);
+	            }else{
+	                textList.push(begin);
+	            }
+	            begin++;
+	        }
+	        return textList;
+	    },
+	    initDefault:function(){
+	        var currentTime = this.currentTime;
+	        if(currentTime!=""){
+	            var currentDate = currentTime.getDate()-1;
+	            this.resetPosByMinu(currentDate);
+	        }
+	    },
+	    getSelect:function(){
+	        var currentIndex = this.currentIndex;
+	        return currentIndex+1;
+	    },
+	    onCurrentIndexChange:function(){
+	        var event = new QEvent(QEvent.EventName.ON_Day_CHANGE);
+	        em.postMsg(event);
+	    },
+	    resetPosByMinu:function(dayindex){
+	             this.currentIndex = dayindex;
+	             this.resetPos();
+	             this.onCurrentIndexChange();//当滚轮变化时触发；
+	    }
+	});
+	module.exports = DayWheelClass;
 
 /***/ }
 /******/ ]);

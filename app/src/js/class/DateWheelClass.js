@@ -8,27 +8,23 @@ var DateWheelClass = WheelClass.extend({
     minTime:null,
     maxTime:null,
     ctrler:null,//父级控制组件
-    isLiji:false,
     currentTime:"",
     ctor:function(ctrl){
         this.ctrler = ctrl;
         this._super("carTimeControlDate");
     },
-    resetTextList:function(minTime,maxTime,isLiji,currentTime){
+    resetTextList:function(minTime,maxTime,currentTime){
         this.minTime = minTime;
         this.maxTime = maxTime;
-        this.isLiji = isLiji;
+
         this.currentTime = currentTime;
-        var textList = this.produceTextList(minTime,maxTime,isLiji);
+        var textList = this.produceTextList(minTime,maxTime);
         this._super(textList);
         this.initDefault();
     },
-    produceTextList:function(minTime,maxTime,isLiji){
+    produceTextList:function(minTime,maxTime){
         var textList=[];
         var now = minTime;
-        if(isLiji){
-            textList.push("马上用车");
-        }
         function _myComparer(date1,date2){//只比较date1 date2的日期
             var maxDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date1));
             var nowDate = DateUtil.parseStrToDate(DateUtil.dateFormat("yyyy-MM-dd",date2));
@@ -60,20 +56,11 @@ var DateWheelClass = WheelClass.extend({
             var days = (currentDay.getTime()-minDay.getTime())/(24*3600000);
             currentIndex = days;
         }
-        if(this.isLiji){
-            currentIndex++;
-        }
         this.currentIndex=currentIndex;
         this.resetPos();
     },
     getSelect:function(){
         var currentIndex = this.currentIndex;
-        if(this.isLiji){
-            if(currentIndex==0){
-                return -1;//返回-1 说明是立即用车
-            }
-            currentIndex--; 
-        }
         var select = DateUtil.dateAdd(this.minTime,currentIndex*24*3600000);
         return DateUtil.dateFormat("yyyy-MM-dd",select);
     },

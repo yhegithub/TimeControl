@@ -215,3 +215,6 @@ body .car-timer .car-body .car-time-show .car-time-frame .car-time-list .car-tim
   color: #1E1D1D;
   font-size: 17px;
 }
+.borderbottom {
+  border-bottom: 1px #ececec solid;
+}
